@@ -13,7 +13,6 @@
                         <v-text-field v-model="accumulatedBackPressure" label="Contrapresión acumulada (kPa)"
                             type="number"></v-text-field>
                         <v-text-field v-model="qm" label="Qm toneladas/hora" type="number"></v-text-field>
-                        <h2>{{ qm + 100 }}</h2>
                         <v-text-field v-model="Patm" label="Patm (kPa)" type="number"></v-text-field>
                         <v-text-field v-model="y" label="y" type="number"></v-text-field>
                         <v-text-field v-model="Kc" label="Kc" type="number"></v-text-field>
