@@ -42,7 +42,7 @@
                 <div align="center">
                     <h1>Ejercicio 1</h1>
 
-                    <v-img :src="`${base}/img/diagrama1.JPG`"></v-img>
+                    <v-img style="width: 80%;" :src="`${base}/img/diagrama1.JPG`"></v-img>
 
                 </div>
                 <h2>Cálculos:</h2>
@@ -105,11 +105,11 @@
                     <h2>Cálculo del área</h2>
                     <v-row>
                         <v-col cols="6">
-                            <v-img style="width: 30%;" src="/img/X.JPG"></v-img>
+                            <v-img style="width: 30%;" :src="`${base}/img/X.JPG`"></v-img>
                             <h3>X ={{ X }}</h3>
                         </v-col>
                         <v-col cols="6">
-                            <v-img style="width: 30%;" src="/img/Area.JPG"></v-img>
+                            <v-img style="width: 30%;" :src="`${base}/img/Area.JPG`"></v-img>
                             <h3 style="color:brown;">Área= {{ Area }} in^2</h3>
                         </v-col>
                     </v-row>
@@ -126,8 +126,7 @@
             </div>
             <hr>
             <div align="center">
-                <v-img style="height: 20%;width: 50%;" src="/img/diagrama2.JPG"></v-img>
-                <v-img style="height: 20%;width: 50%;" :src="`/img/diagrama2.JPG`"></v-img>
+                <v-img style="height: 20%;width: 50%;" :src="`${base}/img/diagrama2.JPG`"></v-img>
 
 
 

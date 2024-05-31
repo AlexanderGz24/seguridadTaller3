@@ -34,7 +34,7 @@
 export default {
   data() {
     return {
-      //drawer: true,
+      base: "/seguridadTaller3",
       usuario: 'Grupo 4',
     };
   },
