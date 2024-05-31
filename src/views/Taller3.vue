@@ -125,6 +125,9 @@
             <hr>
             <div align="center">
                 <v-img style="height: 20%;width: 50%;" src="/img/diagrama2.JPG"></v-img>
+                <v-img style="height: 20%;width: 50%;" :src="`/img/diagrama2.JPG`"></v-img>
+
+
 
             </div>
 
@@ -156,7 +159,7 @@ import { polynomialRoot } from 'mathjs';
 export default {
     data() {
         return {
-            base:"/seguridadTaller3",
+            base: "/seguridadTaller3",
             overpressure: 16,
             setPressure: 12,
             accumulatedBackPressure: 50,
