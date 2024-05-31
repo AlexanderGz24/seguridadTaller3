@@ -9,5 +9,6 @@ export default defineConfig({
     alias:{
       '@': path.resolve(__dirname,'./src')
     }
-  }
+  },
+  base:'https://AlexanderGz24.github.io/seguridadTaller3/'
 })
