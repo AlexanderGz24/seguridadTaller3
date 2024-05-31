@@ -43,6 +43,8 @@
                     <h1>Ejercicio 1</h1>
                     <v-img style="height: 20%;width: 50%;" src="/img/diagrama1.JPG"></v-img>
                     <v-img style="height: 20%;width: 50%;" :src="`/img/diagrama1.JPG`"></v-img>
+                    <v-img :src="`${base}/img/diagrama1.JPG`"></v-img>
+
                 </div>
                 <h2>Cálculos:</h2>
                 <br>
