@@ -10,5 +10,5 @@ export default defineConfig({
       '@': path.resolve(__dirname,'./src')
     }
   },
-  base:'https://AlexanderGz24.github.io/seguridadTaller3/'
+  base:'https://AlexanderGz24.github.io/seguridadTaller3'
 })
