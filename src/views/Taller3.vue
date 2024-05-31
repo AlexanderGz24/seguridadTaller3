@@ -41,8 +41,7 @@
             <div>
                 <div align="center">
                     <h1>Ejercicio 1</h1>
-                    <v-img style="height: 20%;width: 50%;" src="/img/diagrama1.JPG"></v-img>
-                    <v-img style="height: 20%;width: 50%;" :src="`/img/diagrama1.JPG`"></v-img>
+
                     <v-img :src="`${base}/img/diagrama1.JPG`"></v-img>
 
                 </div>
@@ -60,7 +59,7 @@
                 <h2>Hallando kb para válvula Balanced-bellow:</h2>
                 <v-row>
                     <v-col cols="6">
-                        <v-img style="width: 80%;" src="/img/diagramakb.JPG"></v-img>
+                        <v-img style="width: 80%;" :src="`${base}/img/diagramakb.JPG`"></v-img>
                     </v-col>
                     <v-col cols="6">
                         <h3> Temperatura: {{ temperature + 273.15 }} k</h3>

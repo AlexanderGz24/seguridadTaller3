@@ -1,7 +1,7 @@
 <template>
   <v-app-bar color="rgba(255,255,255,255)" density="compact">
-    <v-img src="/public/img/AIRG-LOGO.jpg"></v-img>
-    <v-img src="/public/img/logo-uni.JPG"></v-img>
+    <v-img :src="`${base}/img/AIRG-LOGO.jpg`"></v-img>
+    <v-img :src="`${base}/img/logo-uni.JPG`"></v-img>
   </v-app-bar>
 
   <v-navigation-drawer expand-on-hover rail style="border-color: rgba(0,0,0,255); border-width: 1.5px;height: 100%; ">
@@ -12,7 +12,7 @@
     <hr>
     <br>
     <div align="center">
-      <v-img src="/public/img/seguridad-portada.JPG" style="width: 80%; border-radius: 10px;"></v-img>
+      <v-img :src="`${base}/img/seguridad-portada.JPG`" style="width: 80%; border-radius: 10px;"></v-img>
     </div>
 
 
