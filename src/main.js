@@ -1,10 +1,10 @@
 import { createApp } from 'vue'
-import App from '@/App.vue'
+import App from '../src/App.vue'
 
 import '@mdi/font/css/materialdesignicons.css' // Importa los estilos de los íconos de Material Design Icons
 
 import router from './plugins/router'
-import '@/style.css'
+import './style.css'
 
 
 import VueSweetalert2 from 'vue-sweetalert2';

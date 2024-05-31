@@ -13,6 +13,7 @@
                         <v-text-field v-model="accumulatedBackPressure" label="Contrapresión acumulada (kPa)"
                             type="number"></v-text-field>
                         <v-text-field v-model="qm" label="Qm toneladas/hora" type="number"></v-text-field>
+                        <h2>{{ qm + 100 }}</h2>
                         <v-text-field v-model="Patm" label="Patm (kPa)" type="number"></v-text-field>
                         <v-text-field v-model="y" label="y" type="number"></v-text-field>
                         <v-text-field v-model="Kc" label="Kc" type="number"></v-text-field>
@@ -47,14 +48,13 @@
                 </div>
                 <h2>Cálculos:</h2>
                 <br>
-                <h3>Presión super impuesta: {{ (superimposedBackPressure + Patm) * kPaToPsi }} psi </h3>
-                <h3>Presión contra presión acumulada: {{ (accumulatedBackPressure + Patm) * kPaToPsi }} psi </h3>
-                <h3>back pressupre: {{ (accumulatedBackPressure + Patm) * kPaToPsi + (superimposedBackPressure +
-                            Patm) * kPaToPsi }} psi </h3>
-                <h3>P RMS: {{ (setPressure * 1000 * kPaToPsi) * (1 + overpressure / 100) }} psi </h3>
+                <h3>Presión super impuesta: {{ presionSuperImpuesta }} psi </h3>
+                <h3>Presión contra presión acumulada: {{ presionContraAcumulada }} psi </h3>
+                <h3>back pressupre: {{ backPressure }} psi </h3>
+                <h3>P RMS: {{ pRMS }} psi </h3>
 
                 <h2>Para el hidrógeno:</h2>
-                <h3> Temperatura: {{ temperature + 273.15 }} k</h3>
+                <h3> Temperatura: {{ temperaturaEnKelvin }} k</h3>
                 <h3> Presión= P RMS: {{ (setPressure * 1000 * kPaToPsi) * (1 + overpressure / 100) }} psi </h3>
                 <h2>Hallando kb para válvula Balanced-bellow:</h2>
                 <v-row>
@@ -62,10 +62,9 @@
                         <v-img style="width: 80%;" :src="`${base}/img/diagramakb.JPG`"></v-img>
                     </v-col>
                     <v-col cols="6">
-                        <h3> Temperatura: {{ temperature + 273.15 }} k</h3>
-                        <h3> Presión= P RMS: {{ (setPressure * 1000) * (1 + overpressure / 100) }} kPa</h3>
-                        <h3> Pb: {{ (((accumulatedBackPressure + Patm) * kPaToPsi + (superimposedBackPressure +
-                            Patm) * kPaToPsi)) / ((setPressure * 1000 * kPaToPsi) * (1 + overpressure / 100)) * 100 }}
+                        <h3> Temperatura: {{ temperaturaEnKelvin }} k</h3>
+                        <h3> Presión= P RMS: {{ pRMSKpa }} kPa</h3>
+                        <h3> Pb: {{ presionPb }}
                         </h3>
                         <h3>y: {{ y }}</h3>
                         <v-text-field v-model="Kb" label="Kb" type="number"></v-text-field>
@@ -127,9 +126,6 @@
             <hr>
             <div align="center">
                 <v-img style="height: 20%;width: 50%;" :src="`${base}/img/diagrama2.JPG`"></v-img>
-
-
-
             </div>
 
             <v-row>
@@ -194,7 +190,8 @@ export default {
             Area2: null,
             m2ToInc2: 1550,
             tamanioOrificio1: [],
-            tamanioOrificio2: []
+            tamanioOrificio2: [],
+
         };
     },
 
@@ -203,6 +200,34 @@ export default {
     },
     components: {
         navbarTaller3,
+    },
+    computed: {
+        temperaturaEnKelvin() {
+            return (Number(this.temperature) + 273.15);
+        },
+        presionSuperImpuesta() {
+            return ((Number(this.superimposedBackPressure) + Number(this.Patm)) * this.kPaToPsi).toFixed(3);
+        },
+        presionContraAcumulada() {
+            return ((Number(this.accumulatedBackPressure) + Number(this.Patm)) * this.kPaToPsi).toFixed(3);
+        },
+        backPressure() {
+            return (
+                (Number(this.accumulatedBackPressure) + Number(this.Patm)) * this.kPaToPsi +
+                (Number(this.superimposedBackPressure) + Number(this.Patm)) * this.kPaToPsi
+            ).toFixed(3);
+        },
+        pRMS() {
+            return ((this.setPressure * 1000 * this.kPaToPsi) * (1 + Number(this.overpressure)/ 100)).toFixed(3);
+        },
+        pRMSKpa() {
+            return ((this.setPressure * 1000) * (1 + Number(this.overpressure)/ 100)).toFixed(3);
+        },
+        presionPb() {
+            const numerador = ((Number(this.accumulatedBackPressure) + Number(this.Patm)) * this.kPaToPsi + (Number(this.superimposedBackPressure) + Number(this.Patm)) * this.kPaToPsi);
+            const denominador = ((this.setPressure * 1000 * this.kPaToPsi) * (1 + Number(this.overpressure) / 100));
+            return ((numerador / denominador) * 100).toFixed(3);
+        },
     },
     methods: {
         calcularabyCoeficientes() {
@@ -219,9 +244,9 @@ export default {
             const A = 1
 
             //const B = -(((this.R * this.Tc) / (8 * this.Pc)) + (this.R * (this.temperature + 273.15) / ((this.setPressure * 1000) * (1 + this.overpressure / 100) * this.kPaToAtm))) / 1000
-            const B = -(((this.b)) + (this.R * (this.temperature + 273.15) / ((this.setPressure * 1000) * (1 + this.overpressure / 100) * this.kPaToAtm))) / 1000
-            const C = ((this.a) / ((this.setPressure * 1000) * (1 + this.overpressure / 100) * this.kPaToAtm)) / 1000000
-            const D = -(((this.a) * (this.b)) / ((this.setPressure * 1000) * (1 + this.overpressure / 100) * this.kPaToAtm)) / 1000000000
+            const B = -(((this.b)) + (this.R * (Number(this.temperature) + 273.15) / ((this.setPressure * 1000) * (1 + Number(this.overpressure) / 100) * this.kPaToAtm))) / 1000
+            const C = ((this.a) / ((this.setPressure * 1000) * (1 + Number(this.overpressure) / 100) * this.kPaToAtm)) / 1000000
+            const D = -(((this.a) * (this.b)) / ((this.setPressure * 1000) * (1 + Number(this.overpressure) / 100) * this.kPaToAtm)) / 1000000000
             this.B = B
             this.C = C
             this.D = D
@@ -232,7 +257,7 @@ export default {
             const roots = polynomialRoot(D, C, B, A);
             console.log(roots)
             this.volumenMolar = roots[0]
-            const Z = (this.volumenMolar * ((this.setPressure * 1000) * (1 + this.overpressure / 100) * this.kPaToAtm)) / (this.R * (this.temperature + 273.15)) * 1000
+            const Z = (this.volumenMolar * ((this.setPressure * 1000) * (1 + Number(this.overpressure) / 100) * this.kPaToAtm)) / (this.R * (Number(this.temperature) + 273.15)) * 1000
             this.Z = Z
             this.calcularArea()
 
@@ -244,7 +269,7 @@ export default {
             this.X = parseFloat(X.toFixed(3))
             console.log(this.X)
 
-            const Area = ((this.qm) / (this.X * this.C0 * this.Kb * this.Kc * this.Kv * ((this.setPressure * 1000) * (1 + this.overpressure / 100)))) * ((((this.temperature + 273.15) * this.Z) / this.M) ** 0.5)
+            const Area = ((this.qm) / (this.X * this.C0 * this.Kb * this.Kc * this.Kv * ((this.setPressure * 1000) * (1 + Number(this.overpressure) / 100)))) * ((((Number(this.temperature) + 273.15) * this.Z) / this.M) ** 0.5)
             this.Area = Area * ((1000 ** 0.5) / 3600) * this.m2ToInc2
             console.log(this.Area)
             this.tamanioOrificio1 = this.tamanioOrificioPorArea(this.Area)
@@ -256,7 +281,7 @@ export default {
             this.X = parseFloat(X.toFixed(3))
             console.log(this.X)
 
-            const Area = ((this.qm2) / (this.X * this.C0 * this.Kb * this.Kc * this.Kv * ((this.setPressure * 1000) * (1 + this.overpressure / 100)))) * ((((this.temperature + 273.15) * this.Z) / this.M) ** 0.5)
+            const Area = ((this.qm2) / (this.X * this.C0 * this.Kb * this.Kc * this.Kv * ((this.setPressure * 1000) * (1 + Number(this.overpressure) / 100)))) * ((((Number(this.temperature) + 273.15) * this.Z) / this.M) ** 0.5)
             this.Area2 = Area * ((1000 ** 0.5) / 3600) * this.m2ToInc2
             console.log(this.Area2)
             this.tamanioOrificio2 = this.tamanioOrificioPorArea(this.Area2)
